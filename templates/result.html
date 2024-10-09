@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Kết quả</title>
+    <!-- Thêm Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Thêm CSS tùy chỉnh -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <style>
         img {
             max-width: 100%;
@@ -11,9 +15,17 @@
     </style>
 </head>
 <body>
-    <h1>Ảnh sau khi áp dụng làm mờ</h1>
-    <img src="{{ url_for('static', filename='results/' + result_image) }}">
-    <br>
-    <a href="{{ url_for('index') }}">Tải lên ảnh khác</a>
+    <div class="container">
+        <h1 class="mt-5">Ảnh sau khi áp dụng làm mờ</h1>
+        <div class="mt-4">
+            <img src="{{ url_for('static', filename='results/' + result_image) }}" alt="Kết quả">
+        </div>
+        <br>
+        <a href="{{ url_for('index') }}" class="btn btn-primary mt-4">Tải lên ảnh khác</a>
+    </div>
+    <!-- Thêm Bootstrap JS và jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -1,0 +1,18 @@
+body {
+    background-color: #f8f9fa;
+}
+
+h1 {
+    text-align: center;
+}
+
+.container {
+    max-width: 800px;
+    margin-top: 50px;
+}
+
+img {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+}

@@ -3,12 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <title>Chọn điểm lấy nét</title>
+    <!-- Thêm Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Thêm CSS tùy chỉnh -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <style>
         img {
             max-width: 100%;
             height: auto;
+            cursor: crosshair;
         }
     </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Nhấp vào điểm trên ảnh để chọn điểm lấy nét</h1>
+        <form id="focusForm" method="post">
+            <input type="hidden" id="x" name="x">
+            <input type="hidden" id="y" name="y">
+            <!-- Thêm các tham số điều chỉnh -->
+            <div class="form-group">
+                <label for="max_kernel_size">Max Kernel Size:</label>
+                <input type="number" id="max_kernel_size" name="max_kernel_size" value="71" min="3" step="2" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="num_levels">Num Levels:</label>
+                <input type="number" id="num_levels" name="num_levels" value="5" min="1" class="form-control" required>
+            </div>
+        </form>
+        <div class="mt-4">
+            <img id="image" src="{{ url_for('static', filename='uploads/' + uploaded_image) }}" onclick="getCursorPosition(event)">
+        </div>
+    </div>
+    <!-- Thêm Bootstrap JS và jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- JavaScript tùy chỉnh -->
     <script>
         function getCursorPosition(event) {
             const img = document.getElementById('image');
@@ -28,20 +59,5 @@
             document.getElementById('focusForm').submit();
         }
     </script>
-</head>
-<body>
-    <h1>Nhấp vào điểm trên ảnh để chọn điểm lấy nét</h1>
-    <form id="focusForm" method="post">
-        <input type="hidden" id="x" name="x">
-        <input type="hidden" id="y" name="y">
-        <!-- Thêm các tham số điều chỉnh -->
-        <label for="max_kernel_size">Max Kernel Size:</label>
-        <input type="number" id="max_kernel_size" name="max_kernel_size" value="71" min="3" step="2">
-        <br>
-        <label for="num_levels">Num Levels:</label>
-        <input type="number" id="num_levels" name="num_levels" value="5" min="1">
-        <br><br>
-    </form>
-    <img id="image" src="{{ url_for('static', filename='uploads/' + uploaded_image) }}" onclick="getCursorPosition(event)">
 </body>
 </html>
