@@ -30,19 +30,17 @@ import os
 
 
 def main():
-    image_path = '/Users/mac/Dev/Computer-vision/image/Image 3.jpeg'
+    image_path = './image/Image 5.jpeg'
     device = "cpu"
     midas = utilis.load_model(device)
     depth_map_data = utilis.depth_map(image_path, midas, device)
-    image = cv2.imread(image_path)
-
     window_name = 'Depth Blur'
     cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
     cv2.createTrackbar('Max Kernel Size', window_name, 31, 101, lambda x: None)
     cv2.createTrackbar('Num Levels', window_name, 2, 20, lambda x: None)
 
-    num_levels = 5
-    max_kernel_size = 71
+    num_levels = 10
+    max_kernel_size = 51
     focus_point = 0.5  
     updated= True
     def mouse_callback(event, x, y, flags, param):
@@ -53,7 +51,6 @@ def main():
             print(f'Focus point updated to: {focus_point:.4f}')
             updated = True  # Đánh dấu cần cập nhật ảnh
     cv2.setMouseCallback(window_name, mouse_callback)
-
     while True:
         max_kernel_trackbar = cv2.getTrackbarPos('Max Kernel Size', window_name)
         num_levels = cv2.getTrackbarPos('Num Levels', window_name)
@@ -76,7 +73,7 @@ def main():
         if key == ord('q'):
             break
 
-        cv2.destroyAllWindows()
+    cv2.destroyAllWindows()
 
 if __name__ == '__main__':
     main()
