@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kết quả</title>
+    <style>
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ảnh sau khi áp dụng làm mờ</h1>
+    <img src="{{ url_for('static', filename='results/' + result_image) }}">
+    <br>
+    <a href="{{ url_for('index') }}">Tải lên ảnh khác</a>
+</body>
+</html>

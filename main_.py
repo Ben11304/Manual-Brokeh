@@ -1,4 +1,4 @@
-import utilis
+import utilis_
 import cv2
 import os
 
@@ -32,8 +32,8 @@ import os
 def main():
     image_path = './image/Image 5.jpeg'
     device = "cpu"
-    midas = utilis.load_model(device)
-    depth_map_data = utilis.depth_map(image_path, midas, device)
+    midas = utilis_.load_model(device)
+    depth_map_data = utilis_.depth_map(image_path, midas, device)
     window_name = 'Depth Blur'
     cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
     cv2.createTrackbar('Max Kernel Size', window_name, 31, 101, lambda x: None)
@@ -62,10 +62,11 @@ def main():
         if num_levels < 1:
             num_levels = 1  
 
+
+        # tính năng click điểm focus
         if updated:
-            # Gọi hàm blur với focus_point mới
-            result = utilis.blur(depth_map_data, image_path, num_levels=num_levels, focus_point=focus_point, max_kernel_size=max_kernel_size)
-            updated = False  # Đã cập nhật ảnh
+            result = utilis_.blur(depth_map_data, image_path, num_levels=num_levels, focus_point=focus_point, max_kernel_size=max_kernel_size)
+            updated = False 
         cv2.imshow(window_name, result)
 
         # Nhấn phím 'q' để thoát
