@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Thư viện ảnh đã xử lý{% endblock %}
+
+{% block content %}
+<h1 class="mt-5">Thư viện ảnh đã xử lý</h1>
+{% if images %}
+<div class="row">
+    {% for image in images %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <img src="{{ image }}" class="card-img-top" alt="Ảnh đã xử lý">
+            <div class="card-body text-center">
+                <a href="{{ image }}" class="btn btn-primary" download>Tải xuống</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>Chưa có ảnh nào được xử lý.</p>
+{% endif %}
+{% endblock %}

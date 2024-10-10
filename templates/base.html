@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Ứng dụng của tôi{% endblock %}</title>
+    <title>{% block title %}Ứng dụng làm mờ ảnh theo độ sâu{% endblock %}</title>
     <!-- Thêm liên kết tới Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Thêm CSS tùy chỉnh -->
@@ -12,14 +12,17 @@
     <!-- Header -->
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="{{ url_for('index') }}">Manual Brokeh</a>
+            <a class="navbar-brand" href="{{ url_for('index') }}">Làm mờ ảnh theo độ sâu</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Chuyển đổi điều hướng">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav ml-auto">
                     <li class="nav-item{% if request.endpoint == 'index' %} active{% endif %}">
                         <a class="nav-link" href="{{ url_for('index') }}">Trang chủ</a>
+                    </li>
+                    <li class="nav-item{% if request.endpoint == 'gallery' %} active{% endif %}">
+                        <a class="nav-link" href="{{ url_for('gallery') }}">Thư viện</a>
                     </li>
                     <!-- Thêm các mục menu khác nếu cần -->
                 </ul>
@@ -35,7 +38,7 @@
     <!-- Footer -->
     <footer class="bg-light text-center text-lg-start mt-5">
         <div class="text-center p-3">
-            Bản quyền thuộc về: <a class="text-dark" href="#">Dương Việt Huy/ Nguyễn Thọ Quang</a>
+            © 2023 Bản quyền thuộc về: <a class="text-dark" href="#">Tên của bạn</a>
         </div>
     </footer>
 

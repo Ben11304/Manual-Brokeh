@@ -27,6 +27,7 @@ midas, model_type = utilis.load_model(device)
 
 # Biến cache để lưu trữ depth_map và img
 cache = {}
+processed_images = []
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -129,12 +130,25 @@ def process_click():
 
         # Không cập nhật ảnh trong cache để giữ nguyên ảnh gốc
 
+        # Lưu tên tệp ảnh đã xử lý
+        if result_filename not in processed_images:
+            processed_images.append(result_filename)
+
         # Trả về đường dẫn tới ảnh kết quả
         return jsonify({'result_image': url_for('static', filename='results/' + result_filename)})
     except Exception as e:
         # Ghi log lỗi nếu cần
         print(f"Error in process_click: {e}")
         return jsonify({'error': f'Đã xảy ra lỗi trong quá trình xử lý: {str(e)}'}), 500
+
+@app.route('/gallery')
+def gallery():
+    # Lấy danh sách các đường dẫn tới ảnh đã xử lý
+    image_urls = [url_for('static', filename='results/' + filename) for filename in processed_images]
+    return render_template('gallery.html', images=image_urls)
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
