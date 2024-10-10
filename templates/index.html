@@ -1,26 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Tải lên ảnh</title>
-    <!-- Thêm liên kết tới Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Thêm CSS tùy chỉnh -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-</head>
-<body>
-    <div class="container">
-        <h1 class="mt-5">Tải lên ảnh của bạn</h1>
-        <form method="post" enctype="multipart/form-data" class="mt-4">
-            <div class="form-group">
-                <input type="file" name="file" required class="form-control-file">
-            </div>
-            <button type="submit" class="btn btn-primary">Tải lên</button>
-        </form>
+{% extends "base.html" %}
+
+{% block title %}Tải lên ảnh{% endblock %}
+
+{% block content %}
+<h1 class="mt-5">Tải lên ảnh của bạn</h1>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="alert alert-warning">
+      {% for message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
     </div>
-    <!-- Thêm Bootstrap JS và jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+  {% endif %}
+{% endwith %}
+<form method="post" enctype="multipart/form-data" class="mt-4" onsubmit="showLoading()">
+    <div class="form-group">
+        <input type="file" name="file" required class="form-control-file">
+    </div>
+    <button type="submit" class="btn btn-primary">Tải lên</button>
+</form>
+<!-- Thông báo chờ -->
+<div id="loading" class="mt-4" style="display: none;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Đang xử lý...</span>
+    </div>
+    <p>Đang xử lý, vui lòng chờ...</p>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function showLoading() {
+        document.getElementById('loading').style.display = 'block';
+    }
+</script>
+{% endblock %}

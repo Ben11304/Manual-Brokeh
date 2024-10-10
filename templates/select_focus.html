@@ -1,95 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Chọn điểm lấy nét</title>
-    <!-- Thêm Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Thêm CSS tùy chỉnh -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <style>
-        img {
-            max-width: 100%;
-            height: auto;
-            cursor: crosshair;
-        }
-        #loading {
-            display: none;
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1 class="mt-5">Nhấp vào điểm trên ảnh để chọn điểm lấy nét</h1>
-        <!-- Thêm các tham số điều chỉnh -->
-        <div class="form-group">
-            <label for="max_kernel_size">Max Kernel Size:</label>
-            <input type="number" id="max_kernel_size" name="max_kernel_size" value="71" min="3" step="2" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="num_levels">Num Levels:</label>
-            <input type="number" id="num_levels" name="num_levels" value="5" min="1" class="form-control" required>
-        </div>
-        <!-- Hiển thị ảnh -->
-        <div class="mt-4">
-            <img id="image" src="{{ url_for('static', filename='uploads/' + uploaded_image) }}" onclick="getCursorPosition(event)">
-        </div>
-        <!-- Thông báo chờ -->
-        <div id="loading" class="mt-4">
-            <div class="spinner-border text-primary" role="status">
-                <span class="sr-only">Đang xử lý...</span>
-            </div>
-            <p>Đang xử lý, vui lòng chờ...</p>
-        </div>
+{% extends "base.html" %}
+
+{% block title %}Chọn điểm lấy nét{% endblock %}
+
+{% block content %}
+<h1 class="mt-5">Nhấp vào điểm trên ảnh để chọn điểm lấy nét</h1>
+<!-- Thêm các tham số điều chỉnh -->
+<div class="form-group">
+    <label for="max_kernel_size">Max Kernel Size:</label>
+    <input type="number" id="max_kernel_size" name="max_kernel_size" value="71" min="3" step="2" class="form-control" required>
+</div>
+<div class="form-group">
+    <label for="num_levels">Num Levels:</label>
+    <input type="number" id="num_levels" name="num_levels" value="5" min="1" class="form-control" required>
+</div>
+<!-- Hiển thị ảnh -->
+<div class="mt-4">
+    <img id="image" src="{{ url_for('static', filename='results/result_' + uploaded_image) }}" onclick="getCursorPosition(event)" style="max-width: 100%; height: auto; cursor: crosshair;">
+</div>
+<!-- Thông báo chờ -->
+<div id="loading" class="mt-4" style="display: none;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Đang xử lý...</span>
     </div>
-    <!-- Thêm Bootstrap JS và jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <!-- JavaScript tùy chỉnh -->
-    <script>
-        function getCursorPosition(event) {
-            const img = document.getElementById('image');
-            const rect = img.getBoundingClientRect();
-            const x = event.clientX - rect.left;
-            const y = event.clientY - rect.top;
+    <p>Đang xử lý, vui lòng chờ...</p>
+</div>
+{% endblock %}
 
-            const scaleX = img.naturalWidth / img.clientWidth;
-            const scaleY = img.naturalHeight / img.clientHeight;
+{% block scripts %}
+<script>
+    function getCursorPosition(event) {
+        const img = document.getElementById('image');
+        const rect = img.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
 
-            const realX = Math.round(x * scaleX);
-            const realY = Math.round(y * scaleY);
+        const scaleX = img.naturalWidth / img.clientWidth;
+        const scaleY = img.naturalHeight / img.clientHeight;
 
-            const max_kernel_size = document.getElementById('max_kernel_size').value;
-            const num_levels = document.getElementById('num_levels').value;
+        const realX = Math.round(x * scaleX);
+        const realY = Math.round(y * scaleY);
 
-            // Hiển thị thông báo chờ
-            document.getElementById('loading').style.display = 'block';
+        const max_kernel_size = document.getElementById('max_kernel_size').value;
+        const num_levels = document.getElementById('num_levels').value;
 
-            // Gửi yêu cầu AJAX tới máy chủ
-            $.ajax({
-                url: '{{ url_for("process_click") }}',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    'x': realX,
-                    'y': realY,
-                    'max_kernel_size': max_kernel_size,
-                    'num_levels': num_levels,
-                    'filename': '{{ uploaded_image }}'
-                }),
-                success: function(response) {
-                    // Cập nhật ảnh gốc với ảnh kết quả
-                    document.getElementById('image').src = response.result_image + '?t=' + new Date().getTime();
-                    // Ẩn thông báo chờ
-                    document.getElementById('loading').style.display = 'none';
-                },
-                error: function(xhr, status, error) {
-                    alert('Đã xảy ra lỗi: ' + xhr.responseText);
-                    // Ẩn thông báo chờ
-                    document.getElementById('loading').style.display = 'none';
-                }
-            });
-        }
-    </script>
-</body>
-</html>
+        // Hiển thị thông báo chờ
+        document.getElementById('loading').style.display = 'block';
+
+        // Gửi yêu cầu AJAX tới máy chủ
+        $.ajax({
+            url: '{{ url_for("process_click") }}',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                'x': realX,
+                'y': realY,
+                'max_kernel_size': max_kernel_size,
+                'num_levels': num_levels,
+                'filename': '{{ uploaded_image }}'
+            }),
+            success: function(response) {
+                // Cập nhật ảnh hiển thị với ảnh kết quả
+                document.getElementById('image').src = response.result_image + '?t=' + new Date().getTime();
+                // Ẩn thông báo chờ
+                document.getElementById('loading').style.display = 'none';
+            },
+            error: function(xhr, status, error) {
+                alert('Đã xảy ra lỗi: ' + xhr.responseText);
+                // Ẩn thông báo chờ
+                document.getElementById('loading').style.display = 'none';
+            }
+        });
+    }
+</script>
+{% endblock %}
