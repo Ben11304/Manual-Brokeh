@@ -10,9 +10,8 @@ def load_model(device="cpu"):
     midas.eval()
     return midas, model_type
 
-def depth_map(img, midas, model_type, device="cpu"):
+def depth_map(img, midas, model_type="DPT_Large", device="cpu"):
     midas_transforms = torch.hub.load("intel-isl/MiDaS", "transforms")
-
     if model_type == "DPT_Large" or model_type == "DPT_Hybrid":
         transform = midas_transforms.dpt_transform
     else:
@@ -36,7 +35,7 @@ def depth_map(img, midas, model_type, device="cpu"):
     depth_min = output.min()
     depth_max = output.max()
     depth_map = (output - depth_min) / (depth_max - depth_min)
-    depth_map = 1.0 - depth_map  # Đảo ngược bản đồ độ sâu nếu cần
+    depth_map = 1.0 - depth_map 
     return depth_map
 
 def depth_transform(depth_map, focus_point):
