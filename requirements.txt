@@ -1,0 +1,10 @@
+Flask==2.3.2
+torch==2.0.1
+torchvision==0.15.2
+opencv-python==4.8.0.74
+numpy==1.23.5
+Pillow==9.5.0
+pillow_heif==0.10.0
+uuid==1.30
+pytz==2023.3
+git+https://github.com/lucasb-eyer/pydensecrf.git
