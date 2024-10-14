@@ -2,6 +2,32 @@ import cv2
 import torch
 import numpy as np
 
+import numpy as np
+import pydensecrf.densecrf as dcrf
+
+def apply_crf(image, depth):
+    h, w = image.shape[:2]
+    d = dcrf.DenseCRF2D(w, h, 2)
+
+    # Chuẩn bị U và pairwise
+    U = np.stack([depth.flatten(), 1 - depth.flatten()], axis=0)
+    U = -np.log(U + 1e-6)
+    U = U.reshape((2, h * w))
+    d.setUnaryEnergy(U)
+
+    # Thêm tính năng màu sắc
+    d.addPairwiseGaussian(sxy=3, compat=3)
+    d.addPairwiseBilateral(sxy=50, srgb=13, rgbim=image, compat=10)
+
+    # Thực hiện suy luận
+    Q = d.inference(5)
+    depth_crf = np.argmax(Q, axis=0).reshape((h, w))
+
+    return depth_crf.astype('float32')
+
+
+
+
 def load_model(device="cpu"):
     model_type = "DPT_Large"  # MiDaS v3 - Large (highest accuracy, slowest inference speed)
     midas = torch.hub.load("intel-isl/MiDaS", model_type)
@@ -36,6 +62,16 @@ def depth_map(img, midas, model_type="DPT_Large", device="cpu"):
     depth_max = output.max()
     depth_map = (output - depth_min) / (depth_max - depth_min)
     depth_map = 1.0 - depth_map 
+
+    # depth_map_uint8 = (depth_map * 255).astype('uint8')
+
+    # # Áp dụng Gaussian Blur
+    # depth_map_smooth = cv2.GaussianBlur(depth_map_uint8, (5, 5), 0)
+
+    # # Chuyển đổi lại về dạng float và chuẩn hóa
+    # depth_map_smooth = depth_map_smooth.astype('float32') / 255.0
+
+    # # depth_processed=apply_crf(img, depth_map)
     return depth_map
 
 def depth_transform(depth_map, focus_point):
