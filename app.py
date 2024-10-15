@@ -98,8 +98,8 @@ def process_click():
 
         x = int(data.get('x', -1))
         y = int(data.get('y', -1))
-        max_kernel_size = int(data.get('max_kernel_size', 71))
-        num_levels = int(data.get('num_levels', 5))
+        max_kernel_size = int(data.get('max_kernel_size', 21))
+        num_levels = int(data.get('num_levels', 10))
         filename = data.get('filename', '')
 
         if filename == '':
