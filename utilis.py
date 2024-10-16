@@ -62,19 +62,6 @@ def depth_map(img, midas, model_type="DPT_Large", device="cpu"):
     depth_max = output.max()
     depth_map = (output - depth_min) / (depth_max - depth_min)
     depth_map = 1.0 - depth_map 
-    # depth_map_uint8 = (depth_map * 255).astype('uint8')
-    # depth_map_smooth = cv2.bilateralFilter(depth_map_uint8, d=3, sigmaColor=75, sigmaSpace=75)
-    # depth_map_smooth = depth_map_smooth.astype('float32') / 255.0
-
-    # depth_map_uint8 = (depth_map * 255).astype('uint8')
-
-    # # Áp dụng Gaussian Blur
-    # depth_map_smooth = cv2.GaussianBlur(depth_map_uint8, (5, 5), 0)
-
-    # # Chuyển đổi lại về dạng float và chuẩn hóa
-    # depth_map_smooth = depth_map_smooth.astype('float32') / 255.0
-
-    # # depth_processed=apply_crf(img, depth_map)
     return depth_map
 
 def depth_transform(depth_map, focus_point):
