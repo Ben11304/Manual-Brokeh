@@ -141,6 +141,8 @@ def process_click():
         print(f"Error in process_click: {e}")
         return jsonify({'error': f'Đã xảy ra lỗi trong quá trình xử lý: {str(e)}'}), 500
 
+
+
 @app.route('/gallery')
 def gallery():
     # Lấy danh sách các đường dẫn tới ảnh đã xử lý
