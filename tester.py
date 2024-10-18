@@ -27,15 +27,6 @@ def apply_crf(image, depth):
 
 
 
-
-def load_model(device="cpu"):
-    model_type = "DPT_Large"  # MiDaS v3 - Large (highest accuracy, slowest inference speed)
-    midas = torch.hub.load("intel-isl/MiDaS", model_type)
-    device = torch.device(device)
-    midas.to(device)
-    midas.eval()
-    return midas, model_type
-
 def depth_map(img, midas, model_type="DPT_Large", device="cpu"):
     midas_transforms = torch.hub.load("intel-isl/MiDaS", "transforms")
     if model_type == "DPT_Large" or model_type == "DPT_Hybrid":
@@ -119,9 +110,3 @@ def blur(depth_map, image, num_levels=5, focus_point=0.5, max_kernel_size=71):
     # Tạo mặt nạ nghịch đảo cho vùng không được làm mờ
     inverse_mask = cv2.bitwise_not(combined_mask)
     inverse_mask_3ch = cv2.merge([inverse_mask, inverse_mask, inverse_mask])
-
-    # Áp dụng mặt nạ nghịch đảo lên ảnh gốc và thêm vào kết quả
-    masked_original = cv2.bitwise_and(image, inverse_mask_3ch)
-    result = cv2.add(result, masked_original)
-
-    return result
