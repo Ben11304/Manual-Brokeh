@@ -27,7 +27,6 @@ def apply_crf(image, depth):
 
 
 
-
 def load_model(device="cpu"):
     model_type = "DPT_Large"  # MiDaS v3 - Large (highest accuracy, slowest inference speed)
     midas = torch.hub.load("intel-isl/MiDaS", model_type)
@@ -35,7 +34,6 @@ def load_model(device="cpu"):
     midas.to(device)
     midas.eval()
     return midas, model_type
-
 def depth_map(img, midas, model_type="DPT_Large", device="cpu"):
     midas_transforms = torch.hub.load("intel-isl/MiDaS", "transforms")
     if model_type == "DPT_Large" or model_type == "DPT_Hybrid":
